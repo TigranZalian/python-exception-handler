@@ -35,6 +35,7 @@ This will output:
 Running: 1/0
 Oops... ZeroDivisionError :(
 Returned value: None
+
 Running: 1/1
 Result: 1.0
 Returned value: 1.0
