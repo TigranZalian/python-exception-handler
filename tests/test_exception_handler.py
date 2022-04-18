@@ -4,6 +4,23 @@ import pytest
 
 class MyException(Exception): ...
 
+class ExampleClass:
+    n = 1
+    
+    @exception_handler()
+    def divide(self, a: int, b: int):
+        return a / b
+    
+    @staticmethod
+    @exception_handler()
+    def divide_static(a: int, b: int):
+        return a / b
+    
+    @classmethod
+    @exception_handler()
+    def func_that_returns_cls_prop(cls):
+        return cls.n
+
 def on_exception_callback(ex: Exception):
     """ Returns exceptions's class """
     return ex.__class__
@@ -53,3 +70,19 @@ class TestExceptionHandler:
         
     def test_function_divide_that_raises(self):
         assert function_divide(1, 0) is ZeroDivisionError
+        
+    def test_instance_method_divide_that_not_raises(self):
+        assert ExampleClass().divide(6, 2) == 3.0
+        
+    def test_instance_method_divide_that_raises(self):
+        assert ExampleClass().divide(5, 0) is None
+    
+    def test_static_method_divide_that_not_raises(self):
+        assert ExampleClass.divide_static(1, 1) == 1.0
+        
+    def test_static_method_divide_that_raises(self):
+        assert ExampleClass.divide_static(2, 0) is None
+        
+    def test_class_method_that_not_raises(self):
+        assert ExampleClass.func_that_returns_cls_prop() == 1
+        
